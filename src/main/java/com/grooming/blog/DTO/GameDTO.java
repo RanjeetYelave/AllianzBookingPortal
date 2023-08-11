@@ -12,4 +12,5 @@ public class GameDTO {
 	private int GameId;
 	@NotNull(message = "Game Name cannot be Empty")
 	private String GameName;
+
 }

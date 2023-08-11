@@ -1,5 +1,6 @@
 package com.grooming.blog.serviceImpl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,11 @@ import com.grooming.blog.utils.StandardApiResponseHandler;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 @Service
 @Getter
@@ -37,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
 	GameRepo gameRepo;
 
 	@Override
-	public BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId, Integer gameId) {
+	public BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId, Integer gameId) throws IOException {
 		TowerFloor foundTowerFloor = towerFloorRepo.findById(ToweFloorId)
 				.orElseThrow(() -> new ResourceNotFoundException("TowerFloor", "TowerfloorId", ToweFloorId));
 
@@ -48,6 +54,21 @@ public class BookingServiceImpl implements BookingService {
 		booking.setGame(foundGame);
 		booking.setTowerFloor(foundTowerFloor);
 		Booking savedBooking = bookingRepo.save(booking);
+		// Email Response Configuration
+		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		MediaType mediaType = MediaType.parse("application/json");
+
+		RequestBody body = RequestBody.create(mediaType,
+				"{\n    \"classId\": \"com.cislapi.coreinsurance.core.document.Email\",\n    \"message\": \"Booking Confirmed from Time"
+						+ bookingDTO.getFromTime() + " to " + bookingDTO.getToTime()
+						+ "\",\n    \"subject\": \"Booking Confirmation for " + foundGame.getGameName()
+						+ "\",\n    \"to\": [\n        \"" + bookingDTO.getEmailId()
+						+ "\n    ],\n    \"from\": [\n        \"no-reply@allianz.com\"\n    ],\n    \"signature\": \"Allianz Game Booking Portal - no-reply\"\n}");
+		Request request = new Request.Builder().url(
+				"https://ipc-africa-dev.sandbox0.aztecse-itmpproduct-sandbox.ec1.aws.aztec.cloud.allianz/eWS/sendEmail")
+				.method("POST", body).addHeader("Content-Type", "application/json").build();
+
+		Response response = client.newCall(request).execute();
 
 		return modelMapper.map(savedBooking, BookingDTO.class);
 	}

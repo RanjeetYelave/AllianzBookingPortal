@@ -1,5 +1,6 @@
 package com.grooming.blog.Controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BookingController {
 
 	@PostMapping("/createbooking/{TowerFloorId}/{gameId}")
 	ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingDTO bookingDTO,
-			@PathVariable Integer TowerFloorId, @PathVariable Integer gameId) {
+			@PathVariable Integer TowerFloorId, @PathVariable Integer gameId) throws IOException {
 		BookingDTO createdBooking = bookingServiceImpl.createBooking(bookingDTO, TowerFloorId, gameId);
 		return new ResponseEntity<BookingDTO>(createdBooking, HttpStatus.OK);
 	}
