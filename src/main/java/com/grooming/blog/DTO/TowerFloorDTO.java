@@ -1,0 +1,15 @@
+package com.grooming.blog.DTO;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class TowerFloorDTO {
+	private int Id;
+	private int Tower;
+	private String Floor;
+	private PhaseDTO phase;
+}
