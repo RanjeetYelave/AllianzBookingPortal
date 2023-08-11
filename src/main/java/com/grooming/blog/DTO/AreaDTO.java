@@ -12,7 +12,6 @@ public class AreaDTO {
 	private int Id;
 	@NotNull
 	private String areaName;
-
 	private CityDTO city;
 
 }

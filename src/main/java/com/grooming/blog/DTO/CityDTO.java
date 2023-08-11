@@ -12,7 +12,7 @@ import lombok.Setter;
 public class CityDTO {
 	private int id;
 	@NotNull(message = "Should not be Empty")
-	@Size(min = 2, message = "Enter Valid City Name")
+	@Size(min = 1, message = "Enter Valid City Name")
 	private String CityName;
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -43,6 +44,12 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MissingPathVariableException.class)
 	ResponseEntity<ApiResponse> MissingPathVariableExceptionHandler(MissingPathVariableException ex) {
+		String message = ex.getMessage();
+		return new ResponseEntity<ApiResponse>(new ApiResponse(message, false), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	ResponseEntity<ApiResponse> HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException ex) {
 		String message = ex.getMessage();
 		return new ResponseEntity<ApiResponse>(new ApiResponse(message, false), HttpStatus.BAD_REQUEST);
 	}
