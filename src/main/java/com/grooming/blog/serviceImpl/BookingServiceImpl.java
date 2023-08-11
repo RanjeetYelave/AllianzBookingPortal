@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.grooming.blog.DTO.BookingDTO;
 import com.grooming.blog.Entity.Booking;
+import com.grooming.blog.Entity.Game;
 import com.grooming.blog.Entity.TowerFloor;
 import com.grooming.blog.Exceptions.ResourceNotFoundException;
 import com.grooming.blog.Repo.BookingRepo;
+import com.grooming.blog.Repo.GameRepo;
 import com.grooming.blog.Repo.TowerFloorRepo;
 import com.grooming.blog.Services.BookingService;
 import com.grooming.blog.utils.StandardApiResponseHandler;
@@ -31,14 +33,22 @@ public class BookingServiceImpl implements BookingService {
 	BookingRepo bookingRepo;
 	@Autowired
 	TowerFloorRepo towerFloorRepo;
+	@Autowired
+	GameRepo gameRepo;
 
 	@Override
-	public BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId) {
+	public BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId, Integer gameId) {
 		TowerFloor foundTowerFloor = towerFloorRepo.findById(ToweFloorId)
 				.orElseThrow(() -> new ResourceNotFoundException("TowerFloor", "TowerfloorId", ToweFloorId));
+
+		Game foundGame = gameRepo.findById(gameId)
+				.orElseThrow(() -> new ResourceNotFoundException("Game", "GameId", gameId));
+
 		Booking booking = modelMapper.map(bookingDTO, Booking.class);
+		booking.setGame(foundGame);
 		booking.setTowerFloor(foundTowerFloor);
 		Booking savedBooking = bookingRepo.save(booking);
+
 		return modelMapper.map(savedBooking, BookingDTO.class);
 	}
 

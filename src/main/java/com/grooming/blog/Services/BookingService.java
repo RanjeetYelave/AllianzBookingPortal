@@ -6,7 +6,7 @@ import com.grooming.blog.DTO.BookingDTO;
 import com.grooming.blog.utils.StandardApiResponseHandler;
 
 public interface BookingService {
-	BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId);
+	BookingDTO createBooking(BookingDTO bookingDTO, Integer ToweFloorId, Integer gameId);
 
 	BookingDTO updateBooking(BookingDTO bookingDTO, Integer bookingId);
 

@@ -22,6 +22,8 @@ public class Booking {
 	private int bookingId;
 	@OneToOne
 	private TowerFloor towerFloor;
+	@OneToOne
+	private Game game;
 	private Date date;
 	private LocalTime fromTime;
 	private LocalTime toTime;

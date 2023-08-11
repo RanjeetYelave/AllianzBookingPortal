@@ -24,4 +24,6 @@ public class BookingDTO {
 	private LocalTime toTime;
 	@Email(message = "please Enter a valid Email")
 	private String EmailId;
+
+	private GameDTO game;
 }

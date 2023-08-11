@@ -27,10 +27,10 @@ public class BookingController {
 	@Autowired
 	BookingServiceImpl bookingServiceImpl;
 
-	@PostMapping("/createbooking/{TowerFloorId}")
+	@PostMapping("/createbooking/{TowerFloorId}/{gameId}")
 	ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingDTO bookingDTO,
-			@PathVariable Integer TowerFloorId) {
-		BookingDTO createdBooking = bookingServiceImpl.createBooking(bookingDTO, TowerFloorId);
+			@PathVariable Integer TowerFloorId, @PathVariable Integer gameId) {
+		BookingDTO createdBooking = bookingServiceImpl.createBooking(bookingDTO, TowerFloorId, gameId);
 		return new ResponseEntity<BookingDTO>(createdBooking, HttpStatus.OK);
 	}
 
