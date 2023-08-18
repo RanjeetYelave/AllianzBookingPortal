@@ -1,8 +1,5 @@
 package com.grooming.blog.Entity;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +21,8 @@ public class Booking {
 	private TowerFloor towerFloor;
 	@OneToOne
 	private Game game;
-	private Date date;
-	private LocalTime fromTime;
-	private LocalTime toTime;
+	private String date;
+	private String fromTime;
+	private String toTime;
 	private String EmailId;
 }

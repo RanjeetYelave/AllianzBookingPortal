@@ -1,8 +1,5 @@
 package com.grooming.blog.DTO;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,11 +14,11 @@ public class BookingDTO {
 	private int bookingId;
 	private TowerFloorDTO towerFloor;
 	@NotNull(message = "Please Enter a Date")
-	private Date date;
+	private String date;
 	@NotNull(message = "fromTime cannot be Empty")
-	private LocalTime fromTime;
+	private String fromTime;
 	@NotNull(message = "toTime cannot be Empty")
-	private LocalTime toTime;
+	private String toTime;
 	@Email(message = "please Enter a valid Email")
 	private String EmailId;
 

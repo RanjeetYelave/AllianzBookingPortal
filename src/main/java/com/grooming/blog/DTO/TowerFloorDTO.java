@@ -11,8 +11,8 @@ import lombok.Setter;
 public class TowerFloorDTO {
 	private int Id;
 	@NotNull(message = "Please enter tower No")
-	private int Tower;
+	private String Tower;
 	@NotNull(message = "Please enter floor")
-	private String Floor;
+	private int Floor;
 	private PhaseDTO phase;
 }

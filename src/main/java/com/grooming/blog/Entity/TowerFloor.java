@@ -20,8 +20,8 @@ public class TowerFloor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
 
-	private int Tower;
-	private String Floor;
+	private String Tower;
+	private int Floor;
 	@ManyToOne
 	private Phase phase;
 	@OneToOne(mappedBy = "towerFloor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
