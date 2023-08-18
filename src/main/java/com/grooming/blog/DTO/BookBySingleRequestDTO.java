@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BookBySingleRequestDTO {
+	private int BookBySingleRequestId;
 	private String email;
 	private String city;
 	private String Date;

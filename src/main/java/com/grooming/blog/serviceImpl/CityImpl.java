@@ -27,8 +27,8 @@ public class CityImpl implements CityService {
 	@Override
 	public CityDTO createCity(CityDTO cityDTO) {
 		City city = modelMapper.map(cityDTO, City.class);
-		// city.setCityName(cityDTO.getCityName());
-		System.out.println(cityDTO.getCityName());
+		city.setCityName(cityDTO.getCityName());
+		// System.out.println(cityDTO.getCityName());
 		City savedCity = cityRepo.save(city);
 		return modelMapper.map(savedCity, CityDTO.class);
 	}
