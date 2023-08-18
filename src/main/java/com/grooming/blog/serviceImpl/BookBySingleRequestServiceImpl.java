@@ -32,6 +32,7 @@ import com.grooming.blog.Services.CityService;
 import com.grooming.blog.Services.GameService;
 import com.grooming.blog.Services.PhaseService;
 import com.grooming.blog.Services.TowerFloorService;
+import com.grooming.blog.utils.StandardApiResponseHandler;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -135,5 +136,62 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 				.collect(Collectors.toList());
 		return collect;
 	}
+
+	@Override
+	public StandardApiResponseHandler deleteBooking(Integer bookingId) {
+		BookBySingleRequest bookingById = bookBySingleRequestRepo.findById(bookingId)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking", "BookingID", bookingId));
+		bookBySingleRequestRepo.delete(bookingById);
+		StandardApiResponseHandler standardApiResponseHandler = new StandardApiResponseHandler("Deleted Successfully",
+				true);
+		return standardApiResponseHandler;
+	}
+
+	/*
+	 * @Override public BookBySingleRequestDTO updateBooking(BookBySingleRequestDTO
+	 * bookBySingleRequestDTO, Integer BookingId) { BookBySingleRequest foundBooking
+	 * = bookBySingleRequestRepo.findById(BookingId) .orElseThrow(() -> new
+	 * ResourceNotFoundException("Booking", "Id", BookingId));
+	 * foundBooking.setCity(bookBySingleRequestDTO.getCity());
+	 * foundBooking.setAreaName(bookBySingleRequestDTO.getAreaName());
+	 * foundBooking.setTower(bookBySingleRequestDTO.getTower());
+	 * foundBooking.setFloor(bookBySingleRequestDTO.getFloor());
+	 * foundBooking.setEmail(bookBySingleRequestDTO.getDate());
+	 * foundBooking.setGame(bookBySingleRequestDTO.getGame());
+	 * foundBooking.setLoginTime(bookBySingleRequestDTO.getLoginTime());
+	 * foundBooking.setLogoutTime(bookBySingleRequestDTO.getLogoutTime());
+	 * foundBooking.setPhase(bookBySingleRequestDTO.getPhase());
+	 * 
+	 * //city String city = bookBySingleRequestDTO.getCity(); CityDTO cityDTO = new
+	 * CityDTO(); cityDTO.setCityName(city); CityDTO createdCityDTO =
+	 * cityService.createCity(cityDTO); City createdCity =
+	 * modelMapper.map(createdCityDTO, City.class); cityRepo.save(createdCity);
+	 * 
+	 * // area String areaName = bookBySingleRequestDTO.getAreaName(); AreaDTO
+	 * areaDTO = new AreaDTO(); areaDTO.setAreaName(areaName); AreaDTO
+	 * createdAreaDTO = areaService.createArea(areaDTO, createdCity.getId()); Area
+	 * createdArea = modelMapper.map(createdAreaDTO, Area.class);
+	 * areaRepo.save(createdArea);
+	 * 
+	 * // phase String phase = bookBySingleRequestDTO.getPhase(); PhaseDTO phaseDTO
+	 * = new PhaseDTO(); phaseDTO.setPhaseName(phase); PhaseDTO createdPhaseDTO =
+	 * phaseService.createPhase(phaseDTO, createdArea.getId()); Phase createdPhase =
+	 * modelMapper.map(createdPhaseDTO, Phase.class); phaseRepo.save(createdPhase);
+	 * 
+	 * // towerfloor String tower = bookBySingleRequestDTO.getTower(); int floor =
+	 * bookBySingleRequestDTO.getFloor(); TowerFloorDTO towerFloorDTO = new
+	 * TowerFloorDTO(); towerFloorDTO.setTower(tower);
+	 * towerFloorDTO.setFloor(floor); TowerFloorDTO createTowerFloorDTO =
+	 * towerFloorService.createTowerFloor(towerFloorDTO, createdPhase.getPhaseId());
+	 * TowerFloor createdTowerFloor = modelMapper.map(createTowerFloorDTO,
+	 * TowerFloor.class); towerFloorRepo.save(createdTowerFloor);
+	 * 
+	 * // game String game = bookBySingleRequestDTO.getGame(); GameDTO gameDTO = new
+	 * GameDTO(); gameDTO.setGameName(game); GameDTO createdGameDto =
+	 * gameService.createGame(gameDTO); Game createdGame =
+	 * modelMapper.map(createdGameDto, Game.class); gameRepo.save(createdGame);
+	 * 
+	 * return null; }
+	 */
 
 }

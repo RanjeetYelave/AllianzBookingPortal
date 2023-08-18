@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.BookBySingleRequestDTO;
 import com.grooming.blog.serviceImpl.BookBySingleRequestServiceImpl;
+import com.grooming.blog.utils.StandardApiResponseHandler;
 
 @RequestMapping("api/bookbysinglerequest")
 @RestController()
@@ -37,5 +39,11 @@ public class BookBySingleRequestController {
 	ResponseEntity<List<BookBySingleRequestDTO>> getAllBooking() {
 		List<BookBySingleRequestDTO> allBookings = bookBySingleRequestServiceImpl.getAllBookings();
 		return new ResponseEntity<List<BookBySingleRequestDTO>>(allBookings, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete/{Id}")
+	ResponseEntity<StandardApiResponseHandler> deleteBooking(@PathVariable Integer Id) {
+		StandardApiResponseHandler deletedBookingResponse = bookBySingleRequestServiceImpl.deleteBooking(Id);
+		return new ResponseEntity<StandardApiResponseHandler>(deletedBookingResponse, HttpStatus.OK);
 	}
 }
