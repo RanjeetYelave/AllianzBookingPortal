@@ -1,5 +1,8 @@
 package com.grooming.blog.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import com.grooming.blog.Entity.City;
 import com.grooming.blog.Entity.Game;
 import com.grooming.blog.Entity.Phase;
 import com.grooming.blog.Entity.TowerFloor;
+import com.grooming.blog.Exceptions.ResourceNotFoundException;
 import com.grooming.blog.Repo.AreaRepo;
 import com.grooming.blog.Repo.BookBySingleRequestRepo;
 import com.grooming.blog.Repo.CityRepo;
@@ -113,6 +117,23 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 		BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(createdbooking);
 
 		return modelMapper.map(savedBooking, BookBySingleRequestDTO.class);
+	}
+
+	@Override
+	public BookBySingleRequestDTO getBookingById(Integer Id) {
+		BookBySingleRequest bookingById = bookBySingleRequestRepo.findById(Id)
+				.orElseThrow(() -> new ResourceNotFoundException("Booking", "BookingID", Id));
+		BookBySingleRequestDTO bookBySingleRequestDTO = modelMapper.map(bookingById, BookBySingleRequestDTO.class);
+		return bookBySingleRequestDTO;
+	}
+
+	@Override
+	public List<BookBySingleRequestDTO> getAllBookings() {
+		List<BookBySingleRequest> findAll = bookBySingleRequestRepo.findAll();
+		List<BookBySingleRequestDTO> collect = findAll.stream()
+				.map(eachBooking -> modelMapper.map(eachBooking, BookBySingleRequestDTO.class))
+				.collect(Collectors.toList());
+		return collect;
 	}
 
 }
