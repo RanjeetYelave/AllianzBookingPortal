@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.TowerFloorDTO;
@@ -32,31 +32,30 @@ public class TowerFloorController {
 		return new ResponseEntity<List<TowerFloorDTO>>(allTowerFloor, HttpStatus.OK);
 	}
 
-	@GetMapping("/gettowerfloor/{Id}")
-	ResponseEntity<TowerFloorDTO> getTowerFloorById(@PathVariable Integer Id) {
+	@GetMapping("/gettowerfloorbyId")
+	ResponseEntity<TowerFloorDTO> getTowerFloorById(@RequestParam Integer Id) {
 		TowerFloorDTO towerFloorbyId = towerFloorServiceImpl.getTowerFloorId(Id);
 		return new ResponseEntity<TowerFloorDTO>(towerFloorbyId, HttpStatus.OK);
 	}
 
-	@PostMapping("/createtowerfloor/{phaseId}")
+	@PostMapping("/createtowerfloor")
 	ResponseEntity<TowerFloorDTO> createtowerFloor(@Valid @RequestBody TowerFloorDTO towerFloorDTO,
-			@PathVariable Integer phaseId) {
+			@RequestParam Integer phaseId) {
 		TowerFloorDTO createdTowerFloorDTO = towerFloorServiceImpl.createTowerFloor(towerFloorDTO, phaseId);
 		return new ResponseEntity<TowerFloorDTO>(createdTowerFloorDTO, HttpStatus.OK);
 	}
 
-	@PutMapping("/updatetowerfloor/{Id}")
+	@PutMapping("/updatetowerfloor")
 	ResponseEntity<TowerFloorDTO> updateTowerFloor(@Valid @RequestBody TowerFloorDTO towerFloorDTO,
-			@PathVariable Integer Id) {
+			@RequestParam Integer Id) {
 		TowerFloorDTO updatedTowerFloor = towerFloorServiceImpl.updateTowerFloor(Id, towerFloorDTO);
 		return new ResponseEntity<TowerFloorDTO>(updatedTowerFloor, HttpStatus.OK);
 	}
-	
-	@DeleteMapping("/delete/{Id}")
-	ResponseEntity<StandardApiResponseHandler>deleteTowerFloor(@PathVariable Integer Id)
-	{
+
+	@DeleteMapping("/delete")
+	ResponseEntity<StandardApiResponseHandler> deleteTowerFloor(@RequestParam Integer Id) {
 		StandardApiResponseHandler deletedTowerFloor = towerFloorServiceImpl.deleteTowerFloor(Id);
-		return new ResponseEntity<StandardApiResponseHandler>(deletedTowerFloor,HttpStatus.OK);
+		return new ResponseEntity<StandardApiResponseHandler>(deletedTowerFloor, HttpStatus.OK);
 	}
 
 }
