@@ -10,6 +10,6 @@ import lombok.Setter;
 public class TowerFloorDTO {
 	private int Id;
 	private String Tower;
-	private int Floor;
+	private String Floor;
 	private PhaseDTO phase;
 }

@@ -21,7 +21,7 @@ public class TowerFloor {
 	private int Id;
 
 	private String Tower;
-	private int Floor;
+	private String Floor;
 	@ManyToOne
 	private Phase phase;
 	@OneToOne(mappedBy = "towerFloor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -24,8 +24,9 @@ public class BookBySingleRequest {
 	private String AreaName;
 	private String Phase;
 	private String Tower;
-	private int Floor;
+	private String Floor;
 	private String Game;
 	private String loginTime;
 	private String logoutTime;
+
 }
