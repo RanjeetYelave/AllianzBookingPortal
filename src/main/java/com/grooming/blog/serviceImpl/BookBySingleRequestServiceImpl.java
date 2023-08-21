@@ -96,7 +96,7 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 		// towerfloor
 		String tower = bookBySingleRequestDTO.getTower();
-		int floor = bookBySingleRequestDTO.getFloor();
+		String floor = bookBySingleRequestDTO.getFloor();
 		TowerFloorDTO towerFloorDTO = new TowerFloorDTO();
 		towerFloorDTO.setTower(tower);
 		towerFloorDTO.setFloor(floor);

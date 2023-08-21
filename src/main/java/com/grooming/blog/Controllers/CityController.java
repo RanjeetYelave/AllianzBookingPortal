@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.CityDTO;
@@ -34,9 +34,9 @@ public class CityController {
 		return new ResponseEntity<CityDTO>(createdCity, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/getcity/{cityId}")
-	ResponseEntity<CityDTO> getCity(@PathVariable Integer cityId) {
-		CityDTO cityDTO = cityImpl.getCity(cityId);
+	@GetMapping("/getcitybyId")
+	ResponseEntity<CityDTO> getCity(@RequestParam Integer Id) {
+		CityDTO cityDTO = cityImpl.getCity(Id);
 		return new ResponseEntity<CityDTO>(cityDTO, HttpStatus.OK);
 	}
 
@@ -46,15 +46,15 @@ public class CityController {
 		return new ResponseEntity<List<CityDTO>>(allcities, HttpStatus.OK);
 	}
 
-	@PutMapping("/updatecity/{cityId}")
-	ResponseEntity<CityDTO> updateCity(@PathVariable Integer cityId, @Valid @RequestBody CityDTO cityDto) {
-		CityDTO updatedCity = cityImpl.updateCity(cityId, cityDto);
+	@PutMapping("/updatecity")
+	ResponseEntity<CityDTO> updateCity(@RequestParam Integer Id, @Valid @RequestBody CityDTO cityDto) {
+		CityDTO updatedCity = cityImpl.updateCity(Id, cityDto);
 		return new ResponseEntity<CityDTO>(updatedCity, HttpStatus.ACCEPTED);
 	}
 
-	@DeleteMapping("/delete/{cityId}")
-	ResponseEntity<StandardApiResponseHandler> deleteCity(@PathVariable Integer cityId) {
-		StandardApiResponseHandler response = cityImpl.deleteCity(cityId);
+	@DeleteMapping("/delete")
+	ResponseEntity<StandardApiResponseHandler> deleteCity(@RequestParam Integer Id) {
+		StandardApiResponseHandler response = cityImpl.deleteCity(Id);
 		return new ResponseEntity<StandardApiResponseHandler>(response, HttpStatus.GONE);
 	}
 

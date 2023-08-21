@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.AreaDTO;
@@ -28,8 +28,8 @@ public class AreaController {
 	@Autowired
 	AreaServiceImpl areaServiceImpl;
 
-	@GetMapping("/getarea/{Id}")
-	ResponseEntity<AreaDTO> getAreaById(@PathVariable Integer Id) {
+	@GetMapping("/getareabyId")
+	ResponseEntity<AreaDTO> getAreaById(@RequestParam Integer Id) {
 		AreaDTO areabyId = areaServiceImpl.getAreabyId(Id);
 		return new ResponseEntity<AreaDTO>(areabyId, HttpStatus.OK);
 
@@ -41,22 +41,22 @@ public class AreaController {
 		return new ResponseEntity<List<AreaDTO>>(allArea, HttpStatus.OK);
 	}
 
-	@PostMapping("/createarea/{cityId}")
-	ResponseEntity<AreaDTO> createArea(@Valid @RequestBody AreaDTO areaDTO, @PathVariable Integer cityId) {
+	@PostMapping("/createarea")
+	ResponseEntity<AreaDTO> createArea(@Valid @RequestBody AreaDTO areaDTO, @RequestParam Integer cityId) {
 		AreaDTO createArea = areaServiceImpl.createArea(areaDTO, cityId);
 		return new ResponseEntity<AreaDTO>(createArea, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/updatearea/{Id}")
-	ResponseEntity<AreaDTO> updateAreaById(@PathVariable Integer Id, @Valid @RequestBody AreaDTO areaDTO) {
+	@PutMapping("/updatearea")
+	ResponseEntity<AreaDTO> updateAreaById(@RequestParam Integer Id, @Valid @RequestBody AreaDTO areaDTO) {
 		AreaDTO updateDto = areaServiceImpl.updateArea(Id, areaDTO);
 		return new ResponseEntity<AreaDTO>(updateDto, HttpStatus.OK);
 
 	}
 
-	@DeleteMapping("/delete/{areaId}")
-	ResponseEntity<StandardApiResponseHandler> deleteArea(@PathVariable Integer areaId) {
-		StandardApiResponseHandler deleteArea = areaServiceImpl.deleteArea(areaId);
+	@DeleteMapping("/delete")
+	ResponseEntity<StandardApiResponseHandler> deleteArea(@RequestParam Integer Id) {
+		StandardApiResponseHandler deleteArea = areaServiceImpl.deleteArea(Id);
 		return new ResponseEntity<StandardApiResponseHandler>(deleteArea, HttpStatus.GONE);
 	}
 }

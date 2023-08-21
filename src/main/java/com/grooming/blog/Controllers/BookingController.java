@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.BookingDTO;
@@ -30,16 +31,16 @@ public class BookingController {
 	@Autowired
 	BookingServiceImpl bookingServiceImpl;
 
-	@PostMapping("/createbooking/{TowerFloorId}/{gameId}")
+	@PostMapping("/createbooking")
 	ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingDTO bookingDTO,
-			@PathVariable Integer TowerFloorId, @PathVariable Integer gameId) throws IOException {
+			@RequestParam Integer TowerFloorId, @RequestParam Integer gameId) throws IOException {
 		BookingDTO createdBooking = bookingServiceImpl.createBooking(bookingDTO, TowerFloorId, gameId);
 		return new ResponseEntity<BookingDTO>(createdBooking, HttpStatus.OK);
 	}
 
-	@GetMapping("/getbooking/{bookingId}")
-	ResponseEntity<BookingDTO> getBookingById(@PathVariable Integer bookingId) {
-		BookingDTO bookingById = bookingServiceImpl.getBookingById(bookingId);
+	@GetMapping("/getbookingbyId")
+	ResponseEntity<BookingDTO> getBookingById(@RequestParam Integer Id) {
+		BookingDTO bookingById = bookingServiceImpl.getBookingById(Id);
 		return new ResponseEntity<BookingDTO>(bookingById, HttpStatus.OK);
 	}
 
@@ -49,16 +50,15 @@ public class BookingController {
 		return new ResponseEntity<List<BookingDTO>>(allBookings, HttpStatus.OK);
 	}
 
-	@PutMapping("/updatebooking/{bookingId}")
-	ResponseEntity<BookingDTO> updateBooking(@PathVariable Integer bookingId,
-			@Valid @RequestBody BookingDTO bookingDTO) {
-		BookingDTO updatedBooking = bookingServiceImpl.updateBooking(bookingDTO, bookingId);
+	@PutMapping("/updatebooking")
+	ResponseEntity<BookingDTO> updateBooking(@PathVariable Integer Id, @Valid @RequestBody BookingDTO bookingDTO) {
+		BookingDTO updatedBooking = bookingServiceImpl.updateBooking(bookingDTO, Id);
 		return new ResponseEntity<BookingDTO>(updatedBooking, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/delete/{bookingId}")
-	ResponseEntity<StandardApiResponseHandler> deleteBooking(@PathVariable Integer bookingId) {
-		StandardApiResponseHandler deletedBooking = bookingServiceImpl.deleteBooking(bookingId);
+	@DeleteMapping("/delete")
+	ResponseEntity<StandardApiResponseHandler> deleteBooking(@RequestParam Integer Id) {
+		StandardApiResponseHandler deletedBooking = bookingServiceImpl.deleteBooking(Id);
 		return new ResponseEntity<StandardApiResponseHandler>(deletedBooking, HttpStatus.OK);
 	}
 }

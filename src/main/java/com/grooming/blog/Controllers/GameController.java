@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.GameDTO;
@@ -28,8 +28,8 @@ public class GameController {
 	@Autowired
 	GameServiceImpl gameServiceImpl;
 
-	@GetMapping("/getgame/{Id}")
-	ResponseEntity<GameDTO> findGameById(@PathVariable Integer Id) {
+	@GetMapping("/getgamebyId")
+	ResponseEntity<GameDTO> findGameById(@RequestParam Integer Id) {
 		GameDTO game = gameServiceImpl.getGame(Id);
 		return new ResponseEntity<GameDTO>(game, HttpStatus.OK);
 	}
@@ -40,8 +40,8 @@ public class GameController {
 		return new ResponseEntity<List<GameDTO>>(getallGames, HttpStatus.OK);
 	}
 
-	@PutMapping("/updategame/{Id}")
-	ResponseEntity<GameDTO> updateGame(@PathVariable Integer Id, @Valid @RequestBody GameDTO gameDTO) {
+	@PutMapping("/updategame")
+	ResponseEntity<GameDTO> updateGame(@RequestParam Integer Id, @Valid @RequestBody GameDTO gameDTO) {
 		GameDTO updatedGame = gameServiceImpl.updateGame(Id, gameDTO);
 		return new ResponseEntity<GameDTO>(updatedGame, HttpStatus.OK);
 	}
@@ -52,8 +52,8 @@ public class GameController {
 		return new ResponseEntity<GameDTO>(createdGameDTO, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/delete/{Id}")
-	ResponseEntity<StandardApiResponseHandler> deleteGame(@PathVariable Integer Id) {
+	@DeleteMapping("/delete")
+	ResponseEntity<StandardApiResponseHandler> deleteGame(@RequestParam Integer Id) {
 		StandardApiResponseHandler deletedGameResponse = gameServiceImpl.deleteGame(Id);
 		return new ResponseEntity<StandardApiResponseHandler>(deletedGameResponse, HttpStatus.OK);
 	}

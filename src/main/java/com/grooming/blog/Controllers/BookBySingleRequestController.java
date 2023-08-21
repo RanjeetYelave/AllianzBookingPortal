@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.BookBySingleRequestDTO;
@@ -29,8 +30,8 @@ public class BookBySingleRequestController {
 		return new ResponseEntity<BookBySingleRequestDTO>(createdBooking, HttpStatus.OK);
 	}
 
-	@GetMapping("/getbooking/{Id}")
-	ResponseEntity<BookBySingleRequestDTO> getBookingById(@PathVariable Integer Id) {
+	@GetMapping("/getbookingbyId")
+	ResponseEntity<BookBySingleRequestDTO> getBookingById(@RequestParam Integer Id) {
 		BookBySingleRequestDTO bookingById = bookBySingleRequestServiceImpl.getBookingById(Id);
 		return new ResponseEntity<BookBySingleRequestDTO>(bookingById, HttpStatus.OK);
 	}

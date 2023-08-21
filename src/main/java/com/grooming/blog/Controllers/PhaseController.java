@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grooming.blog.DTO.PhaseDTO;
@@ -28,9 +28,9 @@ public class PhaseController {
 	@Autowired
 	PhaseServiceImpl phaseServiceImpl;
 
-	@GetMapping("/getphase/{phaseId}")
-	ResponseEntity<PhaseDTO> getPhaseById(@PathVariable Integer phaseId) {
-		PhaseDTO phasebyId = phaseServiceImpl.getPhasebyId(phaseId);
+	@GetMapping("/getphasebyId")
+	ResponseEntity<PhaseDTO> getPhaseById(@RequestParam Integer Id) {
+		PhaseDTO phasebyId = phaseServiceImpl.getPhasebyId(Id);
 		return new ResponseEntity<PhaseDTO>(phasebyId, HttpStatus.OK);
 	}
 
@@ -40,21 +40,21 @@ public class PhaseController {
 		return new ResponseEntity<List<PhaseDTO>>(allPhase, HttpStatus.OK);
 	}
 
-	@PutMapping("updatephase/{phaseId}")
-	ResponseEntity<PhaseDTO> updatePhase(@Valid @RequestBody PhaseDTO phaseDTO, @PathVariable Integer phaseId) {
-		PhaseDTO updatePhaseDTO = phaseServiceImpl.updatePhase(phaseId, phaseDTO);
+	@PutMapping("updatephase")
+	ResponseEntity<PhaseDTO> updatePhase(@Valid @RequestBody PhaseDTO phaseDTO, @RequestParam Integer Id) {
+		PhaseDTO updatePhaseDTO = phaseServiceImpl.updatePhase(Id, phaseDTO);
 		return new ResponseEntity<PhaseDTO>(updatePhaseDTO, HttpStatus.OK);
 	}
 
-	@PostMapping("/createphase/{areaId}")
-	ResponseEntity<PhaseDTO> createPhase(@Valid @RequestBody PhaseDTO phaseDTO, @PathVariable Integer areaId) {
+	@PostMapping("/createphase")
+	ResponseEntity<PhaseDTO> createPhase(@Valid @RequestBody PhaseDTO phaseDTO, @RequestParam Integer areaId) {
 		PhaseDTO createdPhaseDTO = phaseServiceImpl.createPhase(phaseDTO, areaId);
 		return new ResponseEntity<PhaseDTO>(createdPhaseDTO, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("delete/{phaseId}")
-	ResponseEntity<StandardApiResponseHandler> deletePhase(@PathVariable Integer phaseId) {
-		StandardApiResponseHandler deletedPhase = phaseServiceImpl.deletePhase(phaseId);
+	@DeleteMapping("delete")
+	ResponseEntity<StandardApiResponseHandler> deletePhase(@RequestParam Integer Id) {
+		StandardApiResponseHandler deletedPhase = phaseServiceImpl.deletePhase(Id);
 		return new ResponseEntity<StandardApiResponseHandler>(deletedPhase, HttpStatus.OK);
 	}
 }
