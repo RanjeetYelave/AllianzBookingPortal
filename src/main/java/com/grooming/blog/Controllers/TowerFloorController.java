@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/towerfloor")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TowerFloorController {
 	@Autowired
 	TowerFloorServiceImpl towerFloorServiceImpl;
@@ -51,12 +53,11 @@ public class TowerFloorController {
 		TowerFloorDTO updatedTowerFloor = towerFloorServiceImpl.updateTowerFloor(Id, towerFloorDTO);
 		return new ResponseEntity<TowerFloorDTO>(updatedTowerFloor, HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/delete/{Id}")
-	ResponseEntity<StandardApiResponseHandler>deleteTowerFloor(@PathVariable Integer Id)
-	{
+	ResponseEntity<StandardApiResponseHandler> deleteTowerFloor(@PathVariable Integer Id) {
 		StandardApiResponseHandler deletedTowerFloor = towerFloorServiceImpl.deleteTowerFloor(Id);
-		return new ResponseEntity<StandardApiResponseHandler>(deletedTowerFloor,HttpStatus.OK);
+		return new ResponseEntity<StandardApiResponseHandler>(deletedTowerFloor, HttpStatus.OK);
 	}
 
 }
