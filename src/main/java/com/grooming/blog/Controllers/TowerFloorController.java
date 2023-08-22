@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/towerfloor")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://10.174.0.188:4200")
 public class TowerFloorController {
 	@Autowired
 	TowerFloorServiceImpl towerFloorServiceImpl;
