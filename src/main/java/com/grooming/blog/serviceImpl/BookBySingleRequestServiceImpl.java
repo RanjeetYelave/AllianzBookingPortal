@@ -76,6 +76,10 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 	@Override
 	public BookBySingleRequestDTO createBooking(BookBySingleRequestDTO bookBySingleRequestDTO) {
+
+		// BookBySingleRequestDTO foundResultByDate =
+		// bookBySingleRequestRepo.findByDate(bookBySingleRequestDTO.getDate());
+		System.out.println(bookBySingleRequestDTO.getDate());
 		// city
 		String city = bookBySingleRequestDTO.getCity();
 		CityDTO cityDTO = new CityDTO();

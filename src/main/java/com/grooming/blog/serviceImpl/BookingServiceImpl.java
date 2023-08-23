@@ -55,10 +55,10 @@ public class BookingServiceImpl implements BookingService {
 		OkHttpClient client = new OkHttpClient().newBuilder().build();
 		MediaType mediaType = MediaType.parse("application/json");
 
-		/*
-		 * RequestBody body = RequestBody.create(mediaType, "{\n \"classId\":
+		/**
+		 * RequestBody body = RequestBody.create(mediaType, "{\n \"classId\":"
 		 * \"com.cislapi.coreinsurance.core.document.Email\",\n \"message\": \"Booking
-		 * Confirmed from Time" + bookingDTO.getFromTime() + " to " +
+		 * Confirmed from Time" + bookingDTO.getFromTime() + " to " +"
 		 * bookingDTO.getToTime() + "\",\n \"subject\": \"Booking Confirmation for " +
 		 * foundGame.getGameName() + "\",\n \"to\": [\n \"" + bookingDTO.getEmailId() +
 		 * "\n ],\n \"from\": [\n \"no-reply@allianz.com\"\n ],\n \"signature\":
@@ -68,7 +68,7 @@ public class BookingServiceImpl implements BookingService {
 		 * .method("POST", body).addHeader("Content-Type", "application/json").build();
 		 * 
 		 * Response response = client.newCall(request).execute();
-		 */
+		 **/
 
 		return modelMapper.map(savedBooking, BookingDTO.class);
 	}
