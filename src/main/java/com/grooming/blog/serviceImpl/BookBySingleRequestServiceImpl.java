@@ -78,6 +78,10 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 	@Autowired
 	ModelMapper modelMapper;
 
+	LocalDate Globaldate;
+	LocalTime GlobalinTime;
+	LocalTime GlobaloutTime;
+
 	@Override
 	public BookBySingleRequestDTO createBooking(BookBySingleRequestDTO bookBySingleRequestDTO) {
 
@@ -86,6 +90,7 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH);
 		LocalDate date = LocalDate.parse(bookBySingleRequestDTO.getCurrentLocale(), inputFormatter);
+		Globaldate = date;
 
 		// time conversion INTIME
 		String inTimeString = bookBySingleRequestDTO.getLoginTime();
@@ -93,6 +98,7 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 		LocalTime convertedInTime = LocalTime.parse(inTimeString, Informatter);
 		System.out.println("log~ IN-TIME" + convertedInTime);
+		GlobalinTime = convertedInTime;
 
 		// time conversion OUTTIME
 		String outTimeString = bookBySingleRequestDTO.getLogoutTime();
@@ -100,73 +106,83 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 		LocalTime convertedOutTime = LocalTime.parse(outTimeString, Outformatter);
 		System.out.println("log~ OUT-TIME" + convertedOutTime);
+		GlobaloutTime = convertedOutTime;
 
-		// city
-		String city = bookBySingleRequestDTO.getCity();
-		CityDTO cityDTO = new CityDTO();
-		cityDTO.setCityName(city);
-		CityDTO createdCityDTO = cityService.createCity(cityDTO);
-		City createdCity = modelMapper.map(createdCityDTO, City.class);
-		cityRepo.save(createdCity);
+		// LOGIC isBookingExists
+		if (!bookBySingleRequestRepo.doesBookBySingleRequestExistInDateTimeRange(date, convertedInTime,
+				convertedOutTime)) {
 
-		// area
-		String areaName = bookBySingleRequestDTO.getAreaName();
-		AreaDTO areaDTO = new AreaDTO();
-		areaDTO.setAreaName(areaName);
-		AreaDTO createdAreaDTO = areaService.createArea(areaDTO, createdCity.getId());
-		Area createdArea = modelMapper.map(createdAreaDTO, Area.class);
-		areaRepo.save(createdArea);
+			// city
+			String city = bookBySingleRequestDTO.getCity();
+			CityDTO cityDTO = new CityDTO();
+			cityDTO.setCityName(city);
+			CityDTO createdCityDTO = cityService.createCity(cityDTO);
+			City createdCity = modelMapper.map(createdCityDTO, City.class);
+			cityRepo.save(createdCity);
 
-		// phase
-		String phase = bookBySingleRequestDTO.getPhase();
-		PhaseDTO phaseDTO = new PhaseDTO();
-		phaseDTO.setPhaseName(phase);
-		PhaseDTO createdPhaseDTO = phaseService.createPhase(phaseDTO, createdArea.getId());
-		Phase createdPhase = modelMapper.map(createdPhaseDTO, Phase.class);
-		phaseRepo.save(createdPhase);
+			// area
+			String areaName = bookBySingleRequestDTO.getAreaName();
+			AreaDTO areaDTO = new AreaDTO();
+			areaDTO.setAreaName(areaName);
+			AreaDTO createdAreaDTO = areaService.createArea(areaDTO, createdCity.getId());
+			Area createdArea = modelMapper.map(createdAreaDTO, Area.class);
+			areaRepo.save(createdArea);
 
-		// towerfloor
-		String tower = bookBySingleRequestDTO.getTower();
-		String floor = bookBySingleRequestDTO.getFloor();
-		TowerFloorDTO towerFloorDTO = new TowerFloorDTO();
-		towerFloorDTO.setTower(tower);
-		towerFloorDTO.setFloor(floor);
-		TowerFloorDTO createTowerFloorDTO = towerFloorService.createTowerFloor(towerFloorDTO,
-				createdPhase.getPhaseId());
-		TowerFloor createdTowerFloor = modelMapper.map(createTowerFloorDTO, TowerFloor.class);
-		towerFloorRepo.save(createdTowerFloor);
+			// phase
+			String phase = bookBySingleRequestDTO.getPhase();
+			PhaseDTO phaseDTO = new PhaseDTO();
+			phaseDTO.setPhaseName(phase);
+			PhaseDTO createdPhaseDTO = phaseService.createPhase(phaseDTO, createdArea.getId());
+			Phase createdPhase = modelMapper.map(createdPhaseDTO, Phase.class);
+			phaseRepo.save(createdPhase);
 
-		// game
-		String game = bookBySingleRequestDTO.getGame();
-		GameDTO gameDTO = new GameDTO();
-		gameDTO.setGameName(game);
-		GameDTO createdGameDto = gameService.createGame(gameDTO);
-		Game createdGame = modelMapper.map(createdGameDto, Game.class);
-		gameRepo.save(createdGame);
+			// towerfloor
+			String tower = bookBySingleRequestDTO.getTower();
+			String floor = bookBySingleRequestDTO.getFloor();
+			TowerFloorDTO towerFloorDTO = new TowerFloorDTO();
+			towerFloorDTO.setTower(tower);
+			towerFloorDTO.setFloor(floor);
+			TowerFloorDTO createTowerFloorDTO = towerFloorService.createTowerFloor(towerFloorDTO,
+					createdPhase.getPhaseId());
+			TowerFloor createdTowerFloor = modelMapper.map(createTowerFloorDTO, TowerFloor.class);
+			towerFloorRepo.save(createdTowerFloor);
 
-		// bookBySingleRequestTableMapping
-		/*
-		 * BookBySingleRequest createdbooking = modelMapper.map(bookBySingleRequestDTO,
-		 * BookBySingleRequest.class); BookBySingleRequest savedBooking =
-		 * bookBySingleRequestRepo.save(createdbooking);
-		 */
+			// game
+			String game = bookBySingleRequestDTO.getGame();
+			GameDTO gameDTO = new GameDTO();
+			gameDTO.setGameName(game);
+			GameDTO createdGameDto = gameService.createGame(gameDTO);
+			Game createdGame = modelMapper.map(createdGameDto, Game.class);
+			gameRepo.save(createdGame);
 
-		BookBySingleRequest bookBySingleRequest = new BookBySingleRequest();
-		bookBySingleRequest.setAreaName(areaName);
-		bookBySingleRequest.setCity(city);
-		bookBySingleRequest.setEmail(bookBySingleRequestDTO.getEmail());
-		bookBySingleRequest.setFloor(floor);
-		bookBySingleRequest.setTower(tower);
-		bookBySingleRequest.setDate(date);
-		bookBySingleRequest.setLoginTime(convertedInTime);
-		bookBySingleRequest.setLogoutTime(convertedOutTime);
-		bookBySingleRequest.setGame(game);
-		bookBySingleRequest.setPhase(phase);
-		BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(bookBySingleRequest);
+			// bookBySingleRequestTableMapping
+			/*
+			 * BookBySingleRequest createdbooking = modelMapper.map(bookBySingleRequestDTO,
+			 * BookBySingleRequest.class); BookBySingleRequest savedBooking =
+			 * bookBySingleRequestRepo.save(createdbooking);
+			 */
 
-		// email
-		sendEmail(bookBySingleRequestDTO);
-		return modelMapper.map(savedBooking, BookBySingleRequestDTO.class);
+			BookBySingleRequest bookBySingleRequest = new BookBySingleRequest();
+			bookBySingleRequest.setAreaName(areaName);
+			bookBySingleRequest.setCity(city);
+			bookBySingleRequest.setEmail(bookBySingleRequestDTO.getEmail());
+			bookBySingleRequest.setFloor(floor);
+			bookBySingleRequest.setTower(tower);
+			bookBySingleRequest.setDate(date);
+			bookBySingleRequest.setLoginTime(convertedInTime);
+			bookBySingleRequest.setLogoutTime(convertedOutTime);
+			bookBySingleRequest.setGame(game);
+			bookBySingleRequest.setPhase(phase);
+			BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(bookBySingleRequest);
+
+			// email
+			sendEmail(bookBySingleRequestDTO);
+			return modelMapper.map(savedBooking, BookBySingleRequestDTO.class);
+		} else {
+			throw new ResourceNotFoundException("Booking Unsucessfull", "Booking Date, Time not available",
+					bookBySingleRequestDTO.getBookBySingleRequestId());
+		}
+
 	}
 
 	private void sendEmail(BookBySingleRequestDTO bookBySingleRequestDTO) {
@@ -204,6 +220,7 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
