@@ -1,6 +1,7 @@
 package com.grooming.blog.Entity;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class BookBySingleRequest {
 	private String Tower;
 	private String Floor;
 	private String Game;
-	private String loginTime;
-	private String logoutTime;
+	private LocalTime loginTime;
+	private LocalTime logoutTime;
 
 }

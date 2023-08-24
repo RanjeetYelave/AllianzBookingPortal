@@ -2,6 +2,7 @@ package com.grooming.blog.serviceImpl;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -79,11 +80,26 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 	@Override
 	public BookBySingleRequestDTO createBooking(BookBySingleRequestDTO bookBySingleRequestDTO) {
-//dateconversion
+
+		// dateconversion
 
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH);
 		LocalDate date = LocalDate.parse(bookBySingleRequestDTO.getCurrentLocale(), inputFormatter);
+
+		// time conversion INTIME
+		String inTimeString = bookBySingleRequestDTO.getLoginTime();
+		DateTimeFormatter Informatter = DateTimeFormatter.ofPattern("HH:mm");
+
+		LocalTime convertedInTime = LocalTime.parse(inTimeString, Informatter);
+		System.out.println("log~ IN-TIME" + convertedInTime);
+
+		// time conversion OUTTIME
+		String outTimeString = bookBySingleRequestDTO.getLogoutTime();
+		DateTimeFormatter Outformatter = DateTimeFormatter.ofPattern("HH:mm");
+
+		LocalTime convertedOutTime = LocalTime.parse(outTimeString, Outformatter);
+		System.out.println("log~ OUT-TIME" + convertedOutTime);
 
 		// city
 		String city = bookBySingleRequestDTO.getCity();
@@ -142,8 +158,8 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 		bookBySingleRequest.setFloor(floor);
 		bookBySingleRequest.setTower(tower);
 		bookBySingleRequest.setDate(date);
-		bookBySingleRequest.setLoginTime(bookBySingleRequestDTO.getLoginTime());
-		bookBySingleRequest.setLogoutTime(bookBySingleRequestDTO.getLogoutTime());
+		bookBySingleRequest.setLoginTime(convertedInTime);
+		bookBySingleRequest.setLogoutTime(convertedOutTime);
 		bookBySingleRequest.setGame(game);
 		bookBySingleRequest.setPhase(phase);
 		BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(bookBySingleRequest);
