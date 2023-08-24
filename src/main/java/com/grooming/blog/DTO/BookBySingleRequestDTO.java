@@ -11,7 +11,7 @@ public class BookBySingleRequestDTO {
 	private int BookBySingleRequestId;
 	private String email;
 	private String city;
-	private String Date;
+	private String currentLocale;
 	private String AreaName;
 	private String Phase;
 	private String Tower;

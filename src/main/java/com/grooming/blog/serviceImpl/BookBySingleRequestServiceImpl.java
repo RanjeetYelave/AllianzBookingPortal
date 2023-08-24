@@ -83,7 +83,7 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH);
-		LocalDate date = LocalDate.parse(bookBySingleRequestDTO.getDate(), inputFormatter);
+		LocalDate date = LocalDate.parse(bookBySingleRequestDTO.getCurrentLocale(), inputFormatter);
 
 		// city
 		String city = bookBySingleRequestDTO.getCity();
