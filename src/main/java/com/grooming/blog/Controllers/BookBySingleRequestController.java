@@ -21,13 +21,13 @@ import com.grooming.blog.utils.StandardApiResponseHandler;
 
 @RestController
 @RequestMapping("api/bookbysinglerequest")
-@CrossOrigin(origins = "http://10.174.0.188:4200")
+@CrossOrigin(origins = { "http://10.174.0.188:4200", "http://10.174.0.188:62018" })
 public class BookBySingleRequestController {
 	@Autowired
 	BookBySingleRequestServiceImpl bookBySingleRequestServiceImpl;
 
 	@PostMapping("/createbooking")
-	@CrossOrigin(origins = "http://10.174.0.188:4200")
+	@CrossOrigin(origins = { "http://10.174.0.188:4200", "http://10.174.0.188:62018" })
 	ResponseEntity<BookBySingleRequestDTO> createBooking(@RequestBody BookBySingleRequestDTO bookBySingleRequestDTO) {
 		BookBySingleRequestDTO createdBooking = bookBySingleRequestServiceImpl.createBooking(bookBySingleRequestDTO);
 		return new ResponseEntity<BookBySingleRequestDTO>(createdBooking, HttpStatus.OK);

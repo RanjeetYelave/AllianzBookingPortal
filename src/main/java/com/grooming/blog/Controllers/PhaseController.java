@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RequestMapping("/api/phase")
 @RestController
-@CrossOrigin(origins = "http://10.174.0.188:4200")
+@CrossOrigin(origins = { "http://10.174.0.188:4200", "http://10.174.0.188:62018" })
 public class PhaseController {
 	@Autowired
 	PhaseServiceImpl phaseServiceImpl;

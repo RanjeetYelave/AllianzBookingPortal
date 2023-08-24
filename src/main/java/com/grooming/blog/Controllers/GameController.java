@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/game")
-@CrossOrigin(origins = "http://10.174.0.188:4200")
+@CrossOrigin(origins = { "http://10.174.0.188:4200", "http://10.174.0.188:62018" })
 public class GameController {
 	@Autowired
 	GameServiceImpl gameServiceImpl;
