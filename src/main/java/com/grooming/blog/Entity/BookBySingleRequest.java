@@ -1,5 +1,7 @@
 package com.grooming.blog.Entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class BookBySingleRequest {
 	private String email;
 
 	private String city;
-	private String Date;
+	private LocalDate Date;
 	private String AreaName;
 	private String Phase;
 	private String Tower;

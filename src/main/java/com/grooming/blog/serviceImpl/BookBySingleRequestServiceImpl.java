@@ -1,7 +1,10 @@
 package com.grooming.blog.serviceImpl;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -76,10 +79,12 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 
 	@Override
 	public BookBySingleRequestDTO createBooking(BookBySingleRequestDTO bookBySingleRequestDTO) {
+//dateconversion
 
-		// BookBySingleRequestDTO foundResultByDate =
-		// bookBySingleRequestRepo.findByDate(bookBySingleRequestDTO.getDate());
-		System.out.println(bookBySingleRequestDTO.getDate());
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH);
+		LocalDate date = LocalDate.parse(bookBySingleRequestDTO.getDate(), inputFormatter);
+
 		// city
 		String city = bookBySingleRequestDTO.getCity();
 		CityDTO cityDTO = new CityDTO();
@@ -124,9 +129,26 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 		gameRepo.save(createdGame);
 
 		// bookBySingleRequestTableMapping
-		BookBySingleRequest createdbooking = modelMapper.map(bookBySingleRequestDTO, BookBySingleRequest.class);
-		BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(createdbooking);
+		/*
+		 * BookBySingleRequest createdbooking = modelMapper.map(bookBySingleRequestDTO,
+		 * BookBySingleRequest.class); BookBySingleRequest savedBooking =
+		 * bookBySingleRequestRepo.save(createdbooking);
+		 */
 
+		BookBySingleRequest bookBySingleRequest = new BookBySingleRequest();
+		bookBySingleRequest.setAreaName(areaName);
+		bookBySingleRequest.setCity(city);
+		bookBySingleRequest.setEmail(bookBySingleRequestDTO.getEmail());
+		bookBySingleRequest.setFloor(floor);
+		bookBySingleRequest.setTower(tower);
+		bookBySingleRequest.setDate(date);
+		bookBySingleRequest.setLoginTime(bookBySingleRequestDTO.getLoginTime());
+		bookBySingleRequest.setLogoutTime(bookBySingleRequestDTO.getLogoutTime());
+		bookBySingleRequest.setGame(game);
+		bookBySingleRequest.setPhase(phase);
+		BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(bookBySingleRequest);
+
+		// email
 		sendEmail(bookBySingleRequestDTO);
 		return modelMapper.map(savedBooking, BookBySingleRequestDTO.class);
 	}
