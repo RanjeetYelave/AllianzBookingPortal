@@ -109,8 +109,8 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 		GlobaloutTime = convertedOutTime;
 
 		// LOGIC isBookingExists
-		if (!bookBySingleRequestRepo.doesBookBySingleRequestExistInDateTimeRange(date, convertedInTime,
-				convertedOutTime)) {
+		if (bookBySingleRequestRepo.doesBookBySingleRequestExistInDateTimeRange(date, convertedInTime,
+				convertedOutTime) == 0) {
 
 			// city
 			String city = bookBySingleRequestDTO.getCity();
@@ -174,13 +174,19 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 			bookBySingleRequest.setGame(game);
 			bookBySingleRequest.setPhase(phase);
 			BookBySingleRequest savedBooking = bookBySingleRequestRepo.save(bookBySingleRequest);
+			bookBySingleRequestDTO.setMessage("Success");
 
-			// email
+			// send email
 			sendEmail(bookBySingleRequestDTO);
 			return modelMapper.map(savedBooking, BookBySingleRequestDTO.class);
 		} else {
-			throw new ResourceNotFoundException("Booking Unsucessfull", "Booking Date, Time not available",
-					bookBySingleRequestDTO.getBookBySingleRequestId());
+			bookBySingleRequestDTO.setMessage("Time slot is already booked. Please select different time slot");
+			return bookBySingleRequestDTO;
+			/*
+			 * throw new ResourceNotFoundException("Booking Unsucessfull",
+			 * "Booking Date, Time not available",
+			 * bookBySingleRequestDTO.getBookBySingleRequestId());
+			 */
 		}
 
 	}
@@ -191,12 +197,16 @@ public class BookBySingleRequestServiceImpl implements BookBySingleRequestServic
 				.build();
 
 		MediaType mediaType = MediaType.parse("application/json");
-
-		String message = " <html> <style> table, th, td {   border:1px solid black; } </style> <body>  <h2>Your booking is confirmed as per below details :</h2>  <table style=\\\"width:100%\\\">   <tr>     <th>Game Name</th>     <th>From</th>     <th>To</th>   </tr>   <tr>     <td>"
-				+ bookBySingleRequestDTO.getGame() + "</td>     <td>" + bookBySingleRequestDTO.getLoginTime()
-				+ "</td>     <td>" + bookBySingleRequestDTO.getLogoutTime()
-				+ "</td>   </tr> </table>  <p>In case of any queries, please drop a mail to below mailbox : A-AIN-APP1-RC03-ITL@allianz.com</p>  </body> </html>  ";
-
+		String message = " <html> <style> table { border-collapse: collapse; width: 100%; border: 2px solid black; } th, td { border: 1px solid black; padding: 10px; text-align: left; } th { background-color: #0074D9; color: white; font-weight: bold; } </style> <body> <h2>Your booking is confirmed as per below details :</h2>"
+				+ "<table>"
+				+ "<tr> <th>Game Name</th> <th>From</th> <th>To</th> <th>Date</th> <th>City</th> <th>Phase</th> <th>Tower</th> <th>Floor</th> </tr>"
+				+ "<tr>" + "<td>" + bookBySingleRequestDTO.getGame() + "</td>" + "<td>"
+				+ bookBySingleRequestDTO.getLoginTime() + "</td>" + "<td>" + bookBySingleRequestDTO.getLogoutTime()
+				+ "</td>" + "<td>" + Globaldate + "</td>" + "<td>" + bookBySingleRequestDTO.getCity() + "</td>" + "<td>"
+				+ bookBySingleRequestDTO.getPhase() + "</td>" + "<td>" + bookBySingleRequestDTO.getTower() + "</td>"
+				+ "<td>" + bookBySingleRequestDTO.getFloor() + "</td>" + "</tr>" + "</table>"
+				+ "<p style='color: #0074D9;'>In case of any queries, please drop a mail to below mailbox : A-AIN-APP1-RC03-ITL@allianz.com</p>"
+				+ "</body> </html> ";
 		String requestBody = "{\n    \"classId\": \"com.cislapi.coreinsurance.core.document.Email\",\n    \"message\": \""
 				+ message + "\",\n    \"subject\": \"Game booking is Successful\",\n    \"to\": [\n        \""
 				+ bookBySingleRequestDTO.getEmail()

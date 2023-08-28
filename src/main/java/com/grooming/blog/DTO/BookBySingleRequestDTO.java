@@ -19,4 +19,5 @@ public class BookBySingleRequestDTO {
 	private String Game;
 	private String loginTime;
 	private String logoutTime;
+	private String message;
 }
